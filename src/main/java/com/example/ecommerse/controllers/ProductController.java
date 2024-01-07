@@ -10,31 +10,49 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
- private ProductService productService;
- private RestTemplate restTemplate ;
+    private ProductService productService;
+    private RestTemplate restTemplate;
 
- @Autowired
- ProductController(ProductService productService, RestTemplate restTemplate){
-   this.productService = productService;
-   this.restTemplate = restTemplate;
- }
- @GetMapping() // localhost:8080/products
-    public List<Product> getAllProducts(){
+    @Autowired
+    ProductController(ProductService productService, RestTemplate restTemplate) {
+        this.productService = productService;
+        this.restTemplate = restTemplate;
+    }
 
-     return productService.getAllProducts();
- }
- @GetMapping("/{id}")
- public  Product getSingleProduct(@PathVariable("id") Long id){
+    @GetMapping() // localhost:8080/products
+    public List<Product> getAllProducts() {
 
-     return  productService.getSingleProduct(id);
- }
+        return productService.getAllProducts();
+    }
 
- @PostMapping("/addproduct")
- public FakeStoreProductDto addNewProduct(@RequestBody Product product) {
-     return  productService.addNewProduct(product) ;
- }
+    @GetMapping("/{id}")
+    public Product getSingleProduct(@PathVariable("id") Long id) {
+
+        return productService.getSingleProduct(id);
+    }
+
+    @PostMapping("/addproduct")
+    public Product addNewProduct(@RequestBody Product product) {
+        return productService.addNewProduct(product);
+    }
+
+    @PutMapping("/{id}")
+    public Product replaceProduct(@PathVariable("id") Long id, @RequestBody Product product) {
+        return productService.replaceProduct(id, product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+    }
+
+    @GetMapping("/catagories")
+    public Set<String> getAllCatagories() {
+        return productService.getAllCatagories();
+    }
 }
